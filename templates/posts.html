@@ -1,0 +1,81 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<section class="content">
+  <div class="header">
+    <img src="{% static 'img/globe.png' %}" class="globe" />
+    <h1 class="heading">Home</h1>
+  </div>
+
+  <section class="post_form">
+    <form action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="text" name="name" placeholder="name" required />
+      <!-- <textarea name="body" placeholder="Tell us anything" required></textarea> -->
+      <input type="text" name="body" placeholder="What's going on" col="3">
+
+      <div class="bottom-area">
+        <div class="mb-0">
+          <input type="file" name="image" />
+          <input type="submit" value="Tweet" />
+        </div>
+        <!-- <div class="heart">
+                    <img src="{% static 'img/heart.png' %}" />
+                </div> -->
+      </div>
+    </form>
+  </section>
+
+  <section class="posts">
+    <ul>
+      {% for post in posts %}
+      <li>
+        <img class="menu_icon js-menu-icon" src="{% static 'img/menu.png' %}" />
+        <div class="menu">
+          <a href="/delete/{{ post.id }}/">Delete</a> <br />
+          <a href="/edit/{{ post.id }}/">Edit</a>
+        </div>
+        <div class="logo">
+          <img src="{% static 'img/profile-user.png' %} " />
+        </div>
+        <div class="name_body">
+          <div class="name">{{ post.name}}</div>
+          <div class="datetime">{{ post.created_at }}</div>
+          <p>{{ post.body }}</p>
+          <br />
+          {% if post.image.url %}
+          <img src="{{ post.image.url }}" class="post-image" width="100%" />
+          {% endif %}
+
+          <form
+            action="{% url 'likes-post' post.pk %}"
+            method="POST"
+            id="likes-form"
+          >
+            {% csrf_token %}
+            <div class="row">
+              <button
+                class="likes-button"
+                type="submit"
+                ,name="post_id"
+                ,
+                value="{{post.id}}"
+              >
+                &#10084;
+              </button>
+              {{post.likes}}
+            </div>
+          </form>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  <script
+    src="https://code.jquery.com/jquery-3.6.0.js"
+    integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"
+  ></script>
+  <script src="{% static 'js/posts.js' %} "></script>
+</section>
+
+{% endblock %}

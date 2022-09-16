@@ -1,0 +1,24 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<section class="content">
+  <div class="header">
+    <img src="{% static 'img/globe.png' %}" class="globe" />
+    <h1 class="heading">Edit</h1>
+  </div>
+
+  <section class="post_form">
+    <form action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="text" name="name" value="{{post.name}}" required />
+      <input type="text" name="body" value="{{post.body}}" />
+      {% if post.image.url %}
+      <img src="{{ post.image.url }}" class="post-image" width="100%" />
+      {% endif %}
+      <input type="file" name="image" />
+      <div class="buttons">
+        <a href="{% url 'index' %}" class="cancel-button"><button>Cancel</button> </a>
+        <input type="submit" value="Update" />
+      </div>
+    </form>
+  </section>
+  {% endblock %}
+</section>
